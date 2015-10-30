@@ -48,22 +48,24 @@ warnings.formatwarning = lambda message, category, *args, **kwargs: \
     '%s: %s' % (category.__name__, message)
 
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
-BIN_DIR = os.path.abspath(os.path.join(ROOT_PATH, '..', 'bin'))
+BIN_DIR = '/usr/bin'
 
 if ROOT_PATH not in sys.path:
     sys.path.append(ROOT_PATH)
 
-DEBUG = False
+DEBUG = True
+#DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 SITE_BRANDING = 'OpenStack Dashboard'
 
-LOGIN_URL = '/auth/login/'
-LOGOUT_URL = '/auth/logout/'
+WEBROOT = '/dashboard'
+LOGIN_URL = WEBROOT + '/auth/login/'
+LOGOUT_URL = WEBROOT + '/auth/logout/'
 # LOGIN_REDIRECT_URL can be used as an alternative for
 # HORIZON_CONFIG.user_home, if user_home is not set.
 # Do not set it to '/home/', as this will cause circular redirect loop
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = WEBROOT
 
 MEDIA_ROOT = os.path.abspath(os.path.join(ROOT_PATH, '..', 'media'))
 MEDIA_URL = '/media/'
@@ -137,7 +139,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
     'horizon.loaders.TemplateLoader'
 )
@@ -200,6 +201,7 @@ else:
         xstatic.main.XStatic(xstatic.pkg.jquery_ui).base_dir))
 
 COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lesscpy {infile}'),
     ('text/scss', 'django_pyscss.compressor.DjangoScssFilter'),
 )
 
@@ -211,6 +213,7 @@ COMPRESS_ENABLED = True
 COMPRESS_OUTPUT_DIR = 'dashboard'
 COMPRESS_CSS_HASHING_METHOD = 'hash'
 COMPRESS_PARSER = 'compressor.parser.HtmlParser'
+COMPRESS_OFFLINE = True
 
 INSTALLED_APPS = [
     'openstack_dashboard',
@@ -228,19 +231,19 @@ INSTALLED_APPS = [
     'openstack_auth',
     'tastypie',
     'django_nvd3',
-    'djangobower',
 ]
 
 DATABASES = {
     'default':{
         'ENGINE':'django.db.backends.mysql' ,
         'NAME':'newtouch' ,
-        'USER':'root' ,
+        'USER':'newtouch' ,
         'PASSWORD':'123456' ,
         'HOST':'localhost' ,
         'PORT':'3306' ,
    }
 }
+
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 AUTHENTICATION_BACKENDS = ('openstack_auth.backend.KeystoneBackend',)
@@ -376,5 +379,3 @@ if DEBUG:
 # below may be omitted, though it should not be harmful
 from openstack_auth import utils as auth_utils
 auth_utils.patch_middleware_get_user()
-
-
