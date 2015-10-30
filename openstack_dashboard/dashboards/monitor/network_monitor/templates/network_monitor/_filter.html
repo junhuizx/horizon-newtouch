@@ -1,0 +1,54 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+{% load form_helpers %}
+{% load url from future %}
+
+{% block form_id %}filter_form{% endblock %}
+{% block form_action %}{% url 'horizon:monitor:network_monitor:filteraction' %}{% endblock %}
+{% block form_attrs %}enctype="multipart/form-data"{% endblock %}
+
+{% block modal-header %}{% trans "Filter" %}{% endblock %}
+
+{% block modal-body %}
+<div class="left">
+    <fieldset>
+        {% include 'horizon/common/_form_errors.html' with form=form %}
+        {% for field in form.visible_fields %}
+            <div class="form-group {% if field.field.required %}{{ form.required_css_class }}{% endif %} {% if field.label == "StartTime" %}datepicker{% endif %} {% if field.label == _("EndTime") %}datepicker{% endif %}">
+                <label class="control-label {{ classes.label }} {% if field.field.required %}{{ form.required_css_class }}{% endif %}" for="{{ field.auto_id }}">{{ field.label }}</label>
+                {% if field.help_text %}
+                    <span class="help-icon" data-toggle="tooltip" data-placement="top" title="{{ field.help_text|safe }}"><span class="glyphicon glyphicon-question-sign"></span></span>
+                {% endif %}
+                {% if field.label == "StartTime" %}
+{#                    <input data-date-format="yyyy-mm-dd" id="id_start" name="StartTime" type="text" value="2015-08-01">#}
+                    <input data-date-format="yyyy-mm-dd" id="id_start" name="StartTime" type="text">
+                {% elif field.label == "EndTime" %}
+                    <input data-date-format="yyyy-mm-dd" id="id_end" name="EndTime" type="text">
+                {% else %}
+                    <div class="{{ classes.value }} {{ field|wrapper_classes }}">
+{#                        {% with add_item_link=field|add_item_url %}#}
+                        {{ field | add_bootstrap_class }}
+{#                        {% endwith %}#}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+{#    {% include "horizon/common/_form_fields.html" %}#}
+    </fieldset>
+</div>
+<div class="right">
+    <h3>{% trans "Description:" %}</h3>
+    <p>
+        {% trans "Every filter displays up to 500 records." %}
+    </p>
+    <p>
+        {% trans "If you do not get the results you want, increase the filter criteria." %}
+    </p>
+</div>
+{% endblock %}s
+
+
+{% block modal-footer %}
+  <input class="btn btn-primary pull-right" type="submit" value="{% trans "Filter" %}" />
+  <a href="{% url 'horizon:monitor:network_monitor:index' %}" class="btn btn-default secondary cancel close">{% trans "Cancel" %}</a>
+{% endblock %}

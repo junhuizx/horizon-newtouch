@@ -1,0 +1,25 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+{% load form_helpers %}
+{% load url from future %}
+
+{% block form_id %}add_blacklist_form{% endblock %}
+{% block form_action %}{% url 'horizon:monitor:network_monitor:index' %}{% endblock %}
+{#{% block form_action %}{% url '#' %}{% endblock %}#}
+{% block form_attrs %}enctype="multipart/form-data"{% endblock %}
+
+{% block modal-header %}{% trans "Add Blacklist" %}{% endblock %}
+
+{% block modal-body %}
+    <div class="left">
+        <fieldset>
+            {% include "horizon/common/_form_fields.html" %}
+        </fieldset>
+    </div>
+{% endblock %}
+
+
+{% block modal-footer %}
+  <input class="btn btn-primary pull-right" type="submit" value="{% trans "Add" %}" />
+  <a href="{% url 'horizon:monitor:network_monitor:index' %}" class="btn btn-default secondary cancel close">{% trans "Cancel" %}</a>
+{% endblock %}

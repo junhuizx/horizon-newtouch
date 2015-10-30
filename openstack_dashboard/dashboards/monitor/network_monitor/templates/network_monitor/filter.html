@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Filter" %}{% endblock %}
+
+{% block page_header %}
+  {% include "horizon/common/_page_header.html" with title=_("Filter") %}
+{% endblock page_header %}
+
+{% block main %}
+  {% include 'monitor/network_monitor/_filter.html' %}
+{#    <form action="" method="post">{% csrf_token %}#}
+{#        {{ form.as_p }}#}
+{#        <input type="submit" value="Send message" />#}
+{#    </form>#}
+{% endblock %}

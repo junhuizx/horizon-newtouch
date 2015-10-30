@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load nvd3_tags %}
+{% block title %}{% trans "Server" %}{% endblock %}
+
+{% block page_header %}
+  {% include "horizon/common/_page_header.html" with title=_("Server") %}
+{% endblock page_header %}
+
+{% block js %}
+      {% include "horizon/_nvd3_scripts.html" %}
+{% endblock %}
+
+{% block main %}
+    {% include_chart_jscss %}
+    {% load_chart chart1.type chart1.data chart1.container chart1.extra %}
+    {% include_container chart1.container 300 "100%"%}
+    <br>
+    <br>
+    {{ server_services_table.render }}
+
+    {{ server_messages_table.render }}
+
+
+{% endblock %}
