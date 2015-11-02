@@ -99,6 +99,11 @@ class ServerDetailView(tables.MultiTableView):
             name, sep, status = service.partition(":")
             name = name.strip().lstrip("u").strip("'")
             id = Service.objects.get(name=name).id
+	    status = status.strip()
+            if(status == '1'):
+                status = 'UP'
+            else:
+                status = 'DOWN'
             services.append(ServerDetailService(id = id,server = server_id,name= name, status=status))
 
         return services
@@ -124,6 +129,7 @@ class ServerDetailView(tables.MultiTableView):
         pk = self.kwargs.get('pk')
 
         monitor_message_list = ServerMonitorMessage.objects.all().filter(server=Server.objects.get(pk=pk))
+	monitor_message_list = list(monitor_message_list)[-24:]
 
         tooltip_date = "%d %b %Y %H:%M:%S %p"
         extra_serie = {
@@ -131,7 +137,6 @@ class ServerDetailView(tables.MultiTableView):
             "date_format": tooltip_date,
             # 'color': '#a4c639'
         }
-        int(time.mktime(datetime.datetime(2012, 6, 1).timetuple()) * 1000)
         xdata = [int(time.mktime(message.time.timetuple()) * 1000) for message in monitor_message_list]
         ydata = [str(message.cpu_usage) for message in monitor_message_list]
         ydata2 = [str(message.mem_usage) for message in monitor_message_list]
@@ -148,11 +153,11 @@ class ServerDetailView(tables.MultiTableView):
             'x_is_date': True,
             'x_axis_format': '%b %d %H:%M:%S',
             'tag_script_js': True,
-            'jquery_on_ready': True,
+            'jquery_on_ready': False,
         }
 
-        chart1 = ServerDetailChart(type="lineWithFocusChart",
-                                   container="linewithfocuschart_container",
+        chart1 = ServerDetailChart(type="lineChart",
+                                   container="linechart_container",
                                    data=data,
                                    extra=extra)
         context["chart1"] = chart1
