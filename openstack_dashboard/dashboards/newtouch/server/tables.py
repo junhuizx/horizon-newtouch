@@ -14,6 +14,7 @@ SNMP_RESTART_HTTPD = '.1.3.6.1.4.1.2021.18'
 SNMP_RESTART_NOVA_API = '.1.3.6.1.4.1.2021.19'
 SNMP_RESTART_NOVA_COMPUTE = '.1.3.6.1.4.1.2021.20'
 SNMP_RESTART_MYSQL = '.1.3.6.1.4.1.2021.21'
+SNMP_RESTART_GATOREDIS = '.1.3.6.1.4.1.2021.22'
 
 
 def safe_unordered_list(value):
@@ -38,6 +39,8 @@ def server_service_restart(request, **kwargs):
         vars = netsnmp.VarList(netsnmp.Varbind(SNMP_RESTART_MYSQL))
     elif(service.name == 'apache'):
         vars = netsnmp.VarList(netsnmp.Varbind(SNMP_RESTART_HTTPD))
+    elif(service.name == 'go_to_redis'):
+	vars = netsnmp.VarList(netsnmp.Varbind(SNMP_RESTART_GATOREDIS))
     else:
         vars = netsnmp.VarList(netsnmp.Varbind(SNMP_RESTART_HTTPD))
     restart_message = session.walk(vars)
