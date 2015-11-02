@@ -238,7 +238,7 @@ DATABASES = {
         'ENGINE':'django.db.backends.mysql' ,
         'NAME':'newtouch' ,
         'USER':'newtouch' ,
-        'PASSWORD':'123456' ,
+        'PASSWORD':'newtouch' ,
         'HOST':'localhost' ,
         'PORT':'3306' ,
    }
