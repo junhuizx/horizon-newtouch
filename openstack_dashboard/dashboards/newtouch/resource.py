@@ -41,7 +41,7 @@ class ServerResource(BaseResource):
     class Meta:
         queryset = Server.objects.all()
         resource_name = 'server'
-        # authorization = Authorization()
+        authorization = Authorization()
         list_allowed_methods = ['post','get', ]
         detail_allowed_methods = ['get',]
         always_return_data = True
