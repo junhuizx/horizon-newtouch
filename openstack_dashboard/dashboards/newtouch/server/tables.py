@@ -77,8 +77,9 @@ class RestartActionLink(tables.Action):
     classes = ("btn-danger",)
 
     def single(self, table, request, id):
-        tag, sep, server_id = request.path.strip("/").partition('/')
-        server_id = int(server_id)
+        #tag, sep, server_id = request.path.strip("/").partition('/')
+        server_id = request.path.strip('/').split('/')[-1]
+	server_id = int(server_id)
         server = Server.objects.get(pk = server_id)
 
         service = Service.objects.get(pk=id)
